@@ -5,6 +5,7 @@
 package com.socialmedia.poc.controller.impl;
 
 import com.socialmedia.poc.controller.Post;
+import com.socialmedia.poc.dto.requests.PostRequest;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
 import com.socialmedia.poc.service.PostService;
@@ -32,5 +33,10 @@ public class PostImpl implements Post {
     @Override
     public PostResponse getById(String id) {
         return postService.getPostById(id);
+    }
+
+    @Override
+    public PostResponse createPost(PostRequest postRequest) {
+        return null;
     }
 }

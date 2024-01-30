@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,8 +21,7 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-@Table(name = "posts")
-public class PostsEntity extends BaseEntity {
+public class PostsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class PostsEntity extends BaseEntity {
     @ManyToOne
     private UserEntity user;
 
-    @ManyToMany(mappedBy = "post")
+    @ManyToMany
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,4 +40,8 @@ public class PostsEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reactions> reactions;
+
+    private Date gmtCreate;
+
+    private Date gmtUpdate;
 }

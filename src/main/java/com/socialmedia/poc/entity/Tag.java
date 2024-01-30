@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,14 +20,15 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-@Table(name = "tags")
-public class Tag extends BaseEntity {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany
     private List<PostsEntity> post;
+    private Date gmtCreate;
+    private Date gmtUpdate;
 }

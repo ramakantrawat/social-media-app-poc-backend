@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * @author Ramakant rawat
@@ -20,15 +20,16 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-@Table(name = "reactions")
-public class Reactions extends BaseEntity{
+public class Reactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long like;
-    private Long unlike;
+    private Long likes;
+    private Long unlikes;
     @ManyToOne
     private PostsEntity post;
     @ManyToOne
     private UserEntity byUser;
+    private Date gmtCreate;
+    private Date gmtUpdate;
 }

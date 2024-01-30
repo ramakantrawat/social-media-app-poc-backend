@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,8 +21,7 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-@Table(name = "users")
-public class UserEntity extends BaseEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,5 +35,7 @@ public class UserEntity extends BaseEntity {
     @OneToMany
     private List<Comments> comments;
 
-    //many comments by one user
+    private Date gmtCreate;
+
+    private Date gmtUpdate;
 }

@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * @author Ramakant rawat
@@ -20,20 +20,22 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-@Table(name = "postMetaData")
-public class PostMetaData extends BaseEntity {
+public class PostMetaData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne(mappedBy = "post_postMetaData")
-//    private PostsEntity post;
+    @OneToOne
+    private PostsEntity post;
 
     private String title;
     private String description;
 
     @Column(nullable = false)
-    private boolean isPublic;
+    private boolean isPublic = true;
 
+    private Date gmtCreate;
+
+    private Date gmtUpdate;
 
 }
