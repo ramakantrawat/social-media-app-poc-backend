@@ -4,10 +4,10 @@
  */
 package com.socialmedia.poc.entity;
 
+import com.socialmedia.poc.dto.MediaType;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.query.sql.internal.ParameterRecognizerImpl;
 
 import java.util.Date;
 
@@ -19,6 +19,8 @@ import java.util.Date;
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class PostMetaData {
     @Id
@@ -28,14 +30,14 @@ public class PostMetaData {
     @OneToOne
     private PostsEntity post;
 
-    private String title;
-    private String description;
+    private String text;
 
     @Column(nullable = false)
     private boolean isPublic = true;
-
+    @ManyToOne
+    private MediaTypeEntity mediaType;
+    private String mediaUrl;
     private Date gmtCreate;
-
     private Date gmtUpdate;
 
 }

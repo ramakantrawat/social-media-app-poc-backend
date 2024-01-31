@@ -5,9 +5,7 @@
 package com.socialmedia.poc.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +17,8 @@ import java.util.List;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 public class UserEntity {
@@ -26,6 +26,10 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+    private String email;
+    private String mobile;
+    private String profession;
     @OneToMany
     private List<PostsEntity> posts;
 
@@ -38,4 +42,16 @@ public class UserEntity {
     private Date gmtCreate;
 
     private Date gmtUpdate;
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", posts=" + posts +
+                ", reactions=" + reactions +
+                ", comments=" + comments +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtUpdate=" + gmtUpdate +
+                '}';
+    }
 }

@@ -4,8 +4,10 @@
  */
 package com.socialmedia.poc.service;
 
+import com.socialmedia.poc.dto.requests.PostRequest;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
+import com.socialmedia.poc.exceptions.UserNotExist;
 
 /**
  * @author Ramakant rawat
@@ -13,6 +15,6 @@ import com.socialmedia.poc.dto.responses.PostResponseList;
  */
 public interface PostService {
     PostResponseList allPost();
-
     PostResponse getPostById(String id);
+    Long createPost(PostRequest postRequest, Long userId) throws UserNotExist;
 }
