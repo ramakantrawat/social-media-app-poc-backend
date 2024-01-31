@@ -13,13 +13,12 @@ import lombok.*;
  */
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     private String name;
     private String profile;
     private Integer followerCount;
-
 }

@@ -5,11 +5,11 @@
 package com.socialmedia.poc.controller;
 
 import com.socialmedia.poc.dto.requests.PostRequest;
+import com.socialmedia.poc.dto.responses.PostCreatedResponse;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -24,5 +24,7 @@ public interface Post {
     @GetMapping("/{id}")
     PostResponse getById(@PathVariable String id);
 
-    PostResponse createPost(@RequestBody PostRequest postRequest);
+    @PostMapping("/create")
+    ResponseEntity<PostCreatedResponse> createPost(@RequestBody PostRequest postRequest,
+                                                   @RequestHeader Long userId);
 }

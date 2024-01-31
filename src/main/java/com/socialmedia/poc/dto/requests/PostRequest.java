@@ -4,6 +4,7 @@
  */
 package com.socialmedia.poc.dto.requests;
 
+import com.socialmedia.poc.dto.MediaType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +17,8 @@ import lombok.Setter;
 @Getter
 @Builder
 public class PostRequest {
-
+    private String text;
+    private MediaType mediaType;
+    private String media;
+    private Boolean isPublic;
 }

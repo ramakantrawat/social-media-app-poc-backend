@@ -5,9 +5,7 @@
 package com.socialmedia.poc.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -19,12 +17,16 @@ import java.util.Date;
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Reactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition = "0")
     private Long likes;
+    @Column(columnDefinition = "0")
     private Long unlikes;
     @ManyToOne
     private PostsEntity post;

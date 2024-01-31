@@ -27,5 +27,4 @@ public class PostResponse {
     private String textorfeed;
     private String postImagePath;
     private String postVideoPath;
-
 }

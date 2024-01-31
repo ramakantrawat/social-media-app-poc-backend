@@ -4,11 +4,16 @@
  */
 package com.socialmedia.poc.controller.impl;
 
+import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.controller.Post;
 import com.socialmedia.poc.dto.requests.PostRequest;
+import com.socialmedia.poc.dto.responses.PostCreatedResponse;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
 import com.socialmedia.poc.service.PostService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +41,13 @@ public class PostImpl implements Post {
     }
 
     @Override
-    public PostResponse createPost(PostRequest postRequest) {
-        return null;
+    public ResponseEntity<PostCreatedResponse> createPost(PostRequest postRequest, Long userId) {
+        postService.createPost(postRequest, userId);
+        return new ResponseEntity<>(
+                PostCreatedResponse.
+                        builder().
+                        message(StringConstants.Post.POST_CREATED_SUCCESS).
+                        build(),
+                HttpStatusCode.valueOf(200));
     }
 }
