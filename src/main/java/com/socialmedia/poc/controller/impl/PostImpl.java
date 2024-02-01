@@ -7,11 +7,12 @@ package com.socialmedia.poc.controller.impl;
 import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.controller.Post;
 import com.socialmedia.poc.dto.requests.PostRequest;
+import com.socialmedia.poc.dto.requests.ReactionRequest;
 import com.socialmedia.poc.dto.responses.PostCreatedResponse;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
 import com.socialmedia.poc.service.PostService;
-import org.springframework.http.HttpStatus;
+import com.socialmedia.poc.service.ReactionService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,19 +27,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostImpl implements Post {
     private PostService postService;
 
-    public PostImpl(PostService postService) {
+    private ReactionService reactionService;
+
+    public PostImpl(PostService postService, ReactionService reactionService) {
         this.postService = postService;
+        this.reactionService = reactionService;
     }
 
     @Override
-    public PostResponseList getAllPosts() {
-        return postService.allPost();
+    public PostResponseList getAllPosts(Long userId) {
+        return postService.allPost(userId);
     }
 
     @Override
-    public PostResponse getById(String id) {
-        return postService.getPostById(id);
+    public PostResponse getById(Long userId, Long id) {
+        return postService.getPostById(userId, id);
     }
+
 
     @Override
     public ResponseEntity<PostCreatedResponse> createPost(PostRequest postRequest, Long userId) {

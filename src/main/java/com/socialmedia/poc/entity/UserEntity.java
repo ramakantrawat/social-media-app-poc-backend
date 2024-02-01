@@ -25,7 +25,6 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String email;
     private String mobile;
@@ -33,7 +32,7 @@ public class UserEntity {
     @OneToMany
     private List<PostsEntity> posts;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Reactions> reactions;
 
     @OneToMany

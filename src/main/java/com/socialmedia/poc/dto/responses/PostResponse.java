@@ -27,4 +27,6 @@ public class PostResponse {
     private String textorfeed;
     private String postImagePath;
     private String postVideoPath;
+    private Boolean likedByMe;
+    private Boolean dislikeByMe;
 }

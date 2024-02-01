@@ -10,10 +10,7 @@ import com.socialmedia.poc.dto.User;
 import com.socialmedia.poc.dto.requests.PostRequest;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
-import com.socialmedia.poc.entity.MediaTypeEntity;
-import com.socialmedia.poc.entity.PostMetaData;
-import com.socialmedia.poc.entity.PostsEntity;
-import com.socialmedia.poc.entity.UserEntity;
+import com.socialmedia.poc.entity.*;
 import com.socialmedia.poc.exceptions.PostNotExist;
 import com.socialmedia.poc.exceptions.UserNotExist;
 import com.socialmedia.poc.repository.MediaTypeRepo;
@@ -27,8 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author Ramakant rawat
@@ -47,7 +42,7 @@ public class PostServiceImpl implements PostService {
     private MediaTypeRepo mediaTypeRepo;
 
     @Override
-    public PostResponseList allPost() {
+    public PostResponseList allPost(Long userId) {
         return PostResponseList.builder().posts(
                 List.of(PostResponse.
                         builder().
@@ -85,12 +80,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getPostById(String id) {
+    public PostResponse getPostById(Long userId, Long postId) {
 
-        PostsEntity postById = postRepo.findById(Long.valueOf(id)).orElseThrow(() -> new PostNotExist());
+        PostsEntity postById = postRepo.findById(postId).orElseThrow(PostNotExist::new);
 
-        int likes = postById.getReactions().stream().filter(reactions -> reactions.getLikes()==1).toList().size();
-        int unlikes = postById.getReactions().stream().filter(reactions -> reactions.getUnlikes()==1).toList().size();
+        int likes = postById.getReactions().stream().filter(Reactions::isLikes).toList().size();
+        int unlikes = postById.getReactions().stream().filter(Reactions::isUnlikes).toList().size();
 
         return PostResponse.
                 builder().
@@ -108,13 +103,15 @@ public class PostServiceImpl implements PostService {
                         likeCount(likes).
                         unlikeCount(unlikes).
                         build()).
+                likedByMe(checkPostAlreadyLikedByUser(userId, postId)).
+                dislikeByMe(checkPostAlreadyDisLikedByUser(userId, postId)).
                 build();
     }
 
     @Override
     public Long createPost(PostRequest postRequest, Long userId) {
         log.info("Checking user is exist or not");
-        UserEntity userEntity = userRepo.findById(userId).orElseThrow(() -> new UserNotExist());
+        UserEntity userEntity = userRepo.findById(userId).orElseThrow(UserNotExist::new);
         log.info("User is exist");
 
         MediaTypeEntity mediaType = mediaTypeRepo.findByType(postRequest.getMediaType().getType());
@@ -143,5 +140,21 @@ public class PostServiceImpl implements PostService {
         postInfoRepo.save(postMetaData);
         log.info("Post Id is: " + savedPost.getId());
         return savedPost.getId();
+    }
+
+    private boolean checkPostAlreadyLikedByUser(Long userId, Long postId) {
+        PostsEntity postById = postRepo.findById(postId).orElseThrow(PostNotExist::new);
+        return postById.getReactions().
+                stream().
+                filter(Reactions::isLikes).
+                anyMatch(reactions -> reactions.getUser().getId().equals(userId));
+    }
+
+    private boolean checkPostAlreadyDisLikedByUser(Long userId, Long postId) {
+        PostsEntity postById = postRepo.findById(postId).orElseThrow(PostNotExist::new);
+        return postById.getReactions().
+                stream().
+                filter(Reactions::isUnlikes).
+                anyMatch(reactions -> reactions.getUser().getId().equals(userId));
     }
 }
