@@ -27,7 +27,7 @@ public class Tag {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "tags",cascade = CascadeType.ALL)
     private List<PostsEntity> post;
     private Date gmtCreate;
     private Date gmtUpdate;

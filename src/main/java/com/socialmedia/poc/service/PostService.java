@@ -14,7 +14,7 @@ import com.socialmedia.poc.exceptions.UserNotExist;
  * @version $Id: Post.java, v 0.1 2024-01-30 9:01 PM Ramakant rawat Exp $$
  */
 public interface PostService {
-    PostResponseList allPost();
-    PostResponse getPostById(String id);
+    PostResponseList allPost(Long userId);
+    PostResponse getPostById(Long userId, Long id);
     Long createPost(PostRequest postRequest, Long userId) throws UserNotExist;
 }

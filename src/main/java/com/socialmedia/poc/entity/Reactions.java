@@ -24,14 +24,14 @@ public class Reactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "0")
-    private Long likes;
-    @Column(columnDefinition = "0")
-    private Long unlikes;
+//    @Column(columnDefinition = "0")
+    private boolean likes;
+//    @Column(columnDefinition = "0")
+    private boolean unlikes;
     @ManyToOne
     private PostsEntity post;
     @ManyToOne
-    private UserEntity byUser;
+    private UserEntity user;
     private Date gmtCreate;
     private Date gmtUpdate;
 }
