@@ -19,6 +19,7 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     private String name;
-    private String profile;
+    private String profileUrl;
+    private String profession;
     private Integer followerCount;
 }

@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
                         user(User.
                                 builder().
                                 name("").
-                                profile("").
+                                profileUrl("").
                                 followerCount(0).
                                 build()).
                         postType(PostType.TEXT).
@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService {
                         user(User.
                                 builder().
                                 name("").
-                                profile("").
+                                profileUrl("").
                                 followerCount(null).
                                 build()).
                         postType(PostType.IMAGE).
@@ -91,8 +91,8 @@ public class PostServiceImpl implements PostService {
                 builder().
                 user(User.
                         builder().
-                        name(postById.getUser().getName()).
-                        profile(postById.getUser().getProfession()).
+                        name(postById.getUser().getFname()).
+                        profession(postById.getUser().getProfession()).
                         followerCount(null).
                         build()).
                 postType(PostType.TEXT).
