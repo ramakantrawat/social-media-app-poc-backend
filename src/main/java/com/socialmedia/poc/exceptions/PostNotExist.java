@@ -9,7 +9,7 @@ package com.socialmedia.poc.exceptions;
  * @version $Id: PostNotExist.java, v 0.1 2024-02-01 2:47 AM Ramakant rawat Exp $$
  */
 public class PostNotExist extends RuntimeException {
-    public PostNotExist(){
+    public PostNotExist() {
         super();
     }
 }

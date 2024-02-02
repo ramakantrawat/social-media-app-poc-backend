@@ -10,7 +10,9 @@ import com.socialmedia.poc.entity.Reactions;
 import com.socialmedia.poc.entity.UserEntity;
 import com.socialmedia.poc.exceptions.PostNotExist;
 import com.socialmedia.poc.exceptions.UserNotExist;
-import com.socialmedia.poc.repository.*;
+import com.socialmedia.poc.repository.PostRepo;
+import com.socialmedia.poc.repository.ReactionRepo;
+import com.socialmedia.poc.repository.UserRepo;
 import com.socialmedia.poc.service.ReactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +33,12 @@ public class ReactionServiceImpl implements ReactionService {
     @Autowired
     private PostRepo postRepo;
     @Autowired
-    private PostInfoRepo postInfoRepo;
-    @Autowired
-    private MediaTypeRepo mediaTypeRepo;
-    @Autowired
     private ReactionRepo reactionRepo;
 
     @Override
     public boolean reaction(Long userId, ReactionRequest reactionRequest) {
 
-        if (reactionRequest.isILike()&&reactionRequest.isIDisLike()){
+        if (reactionRequest.isILike() && reactionRequest.isIDisLike()) {
             throw new PostNotExist();
         }
 
@@ -63,7 +61,7 @@ public class ReactionServiceImpl implements ReactionService {
             reactionRepo.save(reactions);
             return true;
         } else {
-            if (reactionsList.size()==1){
+            if (reactionsList.size() == 1) {
                 Reactions reactions = reactionsList.get(0);
                 reactions.setLikes(reactionRequest.isILike());
                 reactions.setUnlikes(reactionRequest.isIDisLike());
@@ -71,7 +69,7 @@ public class ReactionServiceImpl implements ReactionService {
                 reactionRepo.save(reactions);
                 return true;
             }
-            for (Reactions reaction: reactionsList) {
+            for (Reactions reaction : reactionsList) {
                 reactionRepo.delete(reaction);
             }
             Reactions reactions = Reactions.

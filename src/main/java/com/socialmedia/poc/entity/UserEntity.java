@@ -25,9 +25,11 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String fname;
+    private String lname;
     private String email;
     private String mobile;
+    private String profileUrl;
     private String profession;
     @OneToMany
     private List<PostsEntity> posts;

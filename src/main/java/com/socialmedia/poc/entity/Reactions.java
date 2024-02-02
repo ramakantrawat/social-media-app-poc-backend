@@ -24,9 +24,7 @@ public class Reactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @Column(columnDefinition = "0")
     private boolean likes;
-//    @Column(columnDefinition = "0")
     private boolean unlikes;
     @ManyToOne
     private PostsEntity post;
@@ -34,4 +32,10 @@ public class Reactions {
     private UserEntity user;
     private Date gmtCreate;
     private Date gmtUpdate;
+
+    /*
+     * todo:
+     *   * need to add reaction type we can do reaction on other component as well like comments etc..
+     *
+     * */
 }
