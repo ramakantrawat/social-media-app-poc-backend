@@ -7,12 +7,13 @@ package com.socialmedia.poc.controller.impl;
 import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.controller.Post;
 import com.socialmedia.poc.dto.requests.PostRequest;
-import com.socialmedia.poc.dto.requests.ReactionRequest;
 import com.socialmedia.poc.dto.responses.PostCreatedResponse;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
 import com.socialmedia.poc.service.PostService;
 import com.socialmedia.poc.service.ReactionService;
+import com.socialmedia.poc.util.TokenUtil;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,14 +41,17 @@ public class PostImpl implements Post {
     }
 
     @Override
-    public PostResponse getById(Long userId, Long id) {
-        return postService.getPostById(userId, id);
+    public PostResponse getById(HttpHeaders httpHeaders, Long id) {
+        Long userIdByToken = TokenUtil.getUserIdByToken(httpHeaders);
+
+        return postService.getPostById(userIdByToken, id);
     }
 
 
     @Override
-    public ResponseEntity<PostCreatedResponse> createPost(PostRequest postRequest, Long userId) {
-        postService.createPost(postRequest, userId);
+    public ResponseEntity<PostCreatedResponse> createPost(PostRequest postRequest, HttpHeaders httpHeaders) {
+        Long userIdByToken = TokenUtil.getUserIdByToken(httpHeaders);
+        postService.createPost(postRequest, userIdByToken);
         return new ResponseEntity<>(
                 PostCreatedResponse.
                         builder().

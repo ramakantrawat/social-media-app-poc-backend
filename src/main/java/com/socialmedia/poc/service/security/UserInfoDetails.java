@@ -1,4 +1,4 @@
-package com.socialmedia.poc.service;
+package com.socialmedia.poc.service.security;
 
 import com.socialmedia.poc.entity.UserInfo;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 public class UserInfoDetails implements UserDetails {
 
-    private String name;
+    private String email;
     private String password;
     private List<GrantedAuthority> authorities;
 
     public UserInfoDetails(UserInfo userInfo) {
-        name = userInfo.getFname()+""+userInfo.getLname();
+        email = userInfo.getEmail();
         password = userInfo.getPassword();
         authorities = Arrays.stream(userInfo.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -36,7 +36,7 @@ public class UserInfoDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

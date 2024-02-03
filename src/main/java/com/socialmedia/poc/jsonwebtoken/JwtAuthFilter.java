@@ -1,6 +1,6 @@
 package com.socialmedia.poc.jsonwebtoken;
 
-import com.socialmedia.poc.service.UserInfoService;
+import com.socialmedia.poc.service.security.UserInfoService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
