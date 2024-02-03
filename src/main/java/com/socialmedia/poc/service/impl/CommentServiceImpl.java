@@ -11,9 +11,9 @@ import com.socialmedia.poc.dto.responses.PostCommentsResponse;
 import com.socialmedia.poc.dto.responses.PostCommentsResponseList;
 import com.socialmedia.poc.entity.Comments;
 import com.socialmedia.poc.entity.PostsEntity;
-import com.socialmedia.poc.entity.UserEntity;
-import com.socialmedia.poc.exceptions.PostNotExist;
-import com.socialmedia.poc.exceptions.UserNotExist;
+import com.socialmedia.poc.entity.UserInfo;
+import com.socialmedia.poc.repository.exceptions.PostNotExist;
+import com.socialmedia.poc.repository.exceptions.UserNotExist;
 import com.socialmedia.poc.repository.CommentRepo;
 import com.socialmedia.poc.repository.PostRepo;
 import com.socialmedia.poc.repository.UserRepo;
@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public boolean doCommentOnPost(Long userId, CommentRequest commentRequest) {
-        UserEntity user = userRepo.findById(userId).orElseThrow(UserNotExist::new);
+        UserInfo user = userRepo.findById(userId).orElseThrow(UserNotExist::new);
         PostsEntity post = postRepo.findById(commentRequest.getPostId()).orElseThrow(PostNotExist::new);
         Comments comment = Comments.
                 builder().

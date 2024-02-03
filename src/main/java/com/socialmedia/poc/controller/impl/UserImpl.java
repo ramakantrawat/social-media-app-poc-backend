@@ -5,9 +5,12 @@
 package com.socialmedia.poc.controller.impl;
 
 import com.socialmedia.poc.controller.User;
+import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,12 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping("/user")
 @RestController
+@Slf4j
 public class UserImpl implements User {
     @Autowired
     private UserService userService;
 
+
     @Override
     public void createUser(CreateUserRequest createUserRequest) {
         userService.createUser(createUserRequest);
+    }
+
+    @Override
+    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        return userService.createToken(authRequest);
     }
 }

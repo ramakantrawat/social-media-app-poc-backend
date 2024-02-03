@@ -4,6 +4,7 @@
  */
 package com.socialmedia.poc.controller;
 
+import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,4 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface User {
     @PostMapping("/create")
     void createUser(@RequestBody CreateUserRequest createUserRequest);
+    @PostMapping("/generateToken")
+    String authenticateAndGetToken(@RequestBody AuthRequest authRequest);
 }

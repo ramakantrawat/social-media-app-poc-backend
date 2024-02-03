@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-public class UserEntity {
+public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +31,8 @@ public class UserEntity {
     private String mobile;
     private String profileUrl;
     private String profession;
+    private String password;
+    private String roles;
     @OneToMany
     private List<PostsEntity> posts;
 

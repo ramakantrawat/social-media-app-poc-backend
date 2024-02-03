@@ -2,7 +2,7 @@
  * Globe FinTech Innovations, Inc.
  * Copyright (c) 2004-2024 All Rights Reserved.
  */
-package com.socialmedia.poc.exceptions;
+package com.socialmedia.poc.repository.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 

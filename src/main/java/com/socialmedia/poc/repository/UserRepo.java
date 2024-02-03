@@ -4,17 +4,19 @@
  */
 package com.socialmedia.poc.repository;
 
-import com.socialmedia.poc.entity.UserEntity;
+import com.socialmedia.poc.entity.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * @author Ramakant rawat
  * @version $Id: UserRepo.java, v 0.1 2024-02-01 12:07 AM Ramakant rawat Exp $$
  */
 @Repository
-public interface UserRepo extends JpaRepository<UserEntity, Long> {
-    UserEntity findByEmail(String email);
+public interface UserRepo extends JpaRepository<UserInfo, Long> {
+    Optional<UserInfo> findByEmail(String email);
 
-    UserEntity findByMobile(String mobile);
+    UserInfo findByMobile(String mobile);
 }

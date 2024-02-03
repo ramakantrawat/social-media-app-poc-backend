@@ -29,7 +29,7 @@ public class Reactions {
     @ManyToOne
     private PostsEntity post;
     @ManyToOne
-    private UserEntity user;
+    private UserInfo user;
     private Date gmtCreate;
     private Date gmtUpdate;
 
