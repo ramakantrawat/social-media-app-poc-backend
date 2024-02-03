@@ -27,7 +27,7 @@ public class Comments {
     @ManyToOne
     private PostsEntity post;
     @ManyToOne
-    private UserEntity byUser;
+    private UserInfo byUser;
     private String comment;
     private Date gmtCreate;
     private Date gmtUpdate;

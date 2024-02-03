@@ -7,9 +7,9 @@ package com.socialmedia.poc.service.impl;
 import com.socialmedia.poc.dto.requests.ReactionRequest;
 import com.socialmedia.poc.entity.PostsEntity;
 import com.socialmedia.poc.entity.Reactions;
-import com.socialmedia.poc.entity.UserEntity;
-import com.socialmedia.poc.exceptions.PostNotExist;
-import com.socialmedia.poc.exceptions.UserNotExist;
+import com.socialmedia.poc.entity.UserInfo;
+import com.socialmedia.poc.repository.exceptions.PostNotExist;
+import com.socialmedia.poc.repository.exceptions.UserNotExist;
 import com.socialmedia.poc.repository.PostRepo;
 import com.socialmedia.poc.repository.ReactionRepo;
 import com.socialmedia.poc.repository.UserRepo;
@@ -45,7 +45,7 @@ public class ReactionServiceImpl implements ReactionService {
         Long postId = reactionRequest.getPostId();
         List<Reactions> reactionsList = reactionRepo.findAllByUserIdAndPostId(userId, postId);
 
-        UserEntity user = userRepo.findById(userId).orElseThrow(UserNotExist::new);
+        UserInfo user = userRepo.findById(userId).orElseThrow(UserNotExist::new);
         PostsEntity post = postRepo.findById(reactionRequest.getPostId()).orElseThrow(PostNotExist::new);
 
         if (reactionsList.isEmpty()) {

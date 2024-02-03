@@ -11,8 +11,8 @@ import com.socialmedia.poc.dto.requests.PostRequest;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
 import com.socialmedia.poc.entity.*;
-import com.socialmedia.poc.exceptions.PostNotExist;
-import com.socialmedia.poc.exceptions.UserNotExist;
+import com.socialmedia.poc.repository.exceptions.PostNotExist;
+import com.socialmedia.poc.repository.exceptions.UserNotExist;
 import com.socialmedia.poc.repository.MediaTypeRepo;
 import com.socialmedia.poc.repository.PostInfoRepo;
 import com.socialmedia.poc.repository.PostRepo;
@@ -111,7 +111,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Long createPost(PostRequest postRequest, Long userId) {
         log.info("Checking user is exist or not");
-        UserEntity userEntity = userRepo.findById(userId).orElseThrow(UserNotExist::new);
+        UserInfo userEntity = userRepo.findById(userId).orElseThrow(UserNotExist::new);
         log.info("User is exist");
 
         MediaTypeEntity mediaType = mediaTypeRepo.findByType(postRequest.getMediaType().getType());

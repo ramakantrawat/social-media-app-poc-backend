@@ -30,7 +30,7 @@ public class PostsEntity {
     private PostMetaData postMetaData;
 
     @ManyToOne
-    private UserEntity user;
+    private UserInfo user;
 
     @ManyToMany
     private List<Tag> tags;

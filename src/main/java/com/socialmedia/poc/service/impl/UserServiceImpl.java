@@ -6,8 +6,8 @@ package com.socialmedia.poc.service.impl;
 
 import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
-import com.socialmedia.poc.entity.UserEntity;
-import com.socialmedia.poc.exceptions.UserAlreadyExistException;
+import com.socialmedia.poc.entity.UserInfo;
+import com.socialmedia.poc.repository.exceptions.UserAlreadyExistException;
 import com.socialmedia.poc.repository.UserRepo;
 import com.socialmedia.poc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public void createUser(CreateUserRequest createUserRequest) {
         chkMobAnDEmlExst(createUserRequest.getEmail(), createUserRequest.getMobileNumber());
 
-        UserEntity user = UserEntity.
+        UserInfo user = UserInfo.
                 builder().
                 fname(createUserRequest.getFName()).
                 lname(createUserRequest.getLName()).
