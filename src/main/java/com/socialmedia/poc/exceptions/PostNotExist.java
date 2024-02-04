@@ -2,7 +2,7 @@
  * Globe FinTech Innovations, Inc.
  * Copyright (c) 2004-2024 All Rights Reserved.
  */
-package com.socialmedia.poc.repository.exceptions;
+package com.socialmedia.poc.exceptions;
 
 /**
  * @author Ramakant rawat

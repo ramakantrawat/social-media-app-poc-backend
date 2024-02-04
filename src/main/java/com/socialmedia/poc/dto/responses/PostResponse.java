@@ -21,10 +21,11 @@ import lombok.*;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostResponse {
+    private Long postId;
     private User user;
     private PostInfo postInfo;
     private PostType postType;
-    private String textorfeed;
+    private String textOrFeed;
     private String postImagePath;
     private String postVideoPath;
     private Boolean likedByMe;

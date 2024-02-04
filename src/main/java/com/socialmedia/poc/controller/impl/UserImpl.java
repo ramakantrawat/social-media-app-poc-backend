@@ -7,9 +7,12 @@ package com.socialmedia.poc.controller.impl;
 import com.socialmedia.poc.controller.User;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
+import com.socialmedia.poc.dto.requests.FollowRequest;
 import com.socialmedia.poc.service.UserService;
+import com.socialmedia.poc.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +37,11 @@ public class UserImpl implements User {
     @Override
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         return userService.createToken(authRequest);
+    }
+
+    @Override
+    public Boolean follow(HttpHeaders httpHeaders, FollowRequest followRequest) {
+        Long followBy = TokenUtil.getUserIdByToken(httpHeaders);
+        return userService.follow(followBy, followRequest);
     }
 }

@@ -36,7 +36,8 @@ public class PostImpl implements Post {
     }
 
     @Override
-    public PostResponseList getAllPosts(Long userId) {
+    public PostResponseList getAllPosts(HttpHeaders httpHeaders) {
+        Long userId = TokenUtil.getUserIdByToken(httpHeaders);
         return postService.allPost(userId);
     }
 
