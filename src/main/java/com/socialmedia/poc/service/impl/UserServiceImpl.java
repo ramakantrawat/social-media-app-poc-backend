@@ -7,11 +7,15 @@ package com.socialmedia.poc.service.impl;
 import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
+import com.socialmedia.poc.dto.requests.FollowRequest;
+import com.socialmedia.poc.entity.Followers;
 import com.socialmedia.poc.entity.UserInfo;
+import com.socialmedia.poc.exceptions.AlreadyFollowedException;
+import com.socialmedia.poc.exceptions.UserAlreadyExistException;
+import com.socialmedia.poc.exceptions.UserNotExist;
 import com.socialmedia.poc.jsonwebtoken.JwtService;
+import com.socialmedia.poc.repository.FollowersRepo;
 import com.socialmedia.poc.repository.UserRepo;
-import com.socialmedia.poc.repository.exceptions.UserAlreadyExistException;
-import com.socialmedia.poc.repository.exceptions.UserNotExist;
 import com.socialmedia.poc.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder encoder;
 
+    @Autowired
+    private FollowersRepo followersRepo;
 
     @Autowired
     private JwtService jwtService;
@@ -68,10 +74,22 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
             Optional<UserInfo> email = userRepo.findByEmail(authRequest.getUsername());
-            return jwtService.generateToken(authRequest.getUsername(),email.get().getId());
+            return jwtService.generateToken(authRequest.getUsername(), email.get().getId());
         } else {
             throw new UserNotExist();
         }
+    }
+
+    @Override
+    public Boolean follow(Long followBy, FollowRequest followRequest) {
+        if (followersRepo.findByFollowedByIdAndFollowedToId(followBy, followRequest.getFollowedTo()).isPresent()) {
+            throw new AlreadyFollowedException();
+        }
+        UserInfo byUser = userRepo.findById(followBy).orElseThrow(UserNotExist::new);
+        UserInfo toUser = userRepo.findById(followRequest.getFollowedTo()).orElseThrow(UserNotExist::new);
+        Followers followers = Followers.builder().followedBy(byUser).followedTo(toUser).build();
+        followersRepo.save(followers);
+        return true;
     }
 
     private void chkMobAnDEmlExst(String email, String mobileNumber) {

@@ -11,17 +11,15 @@ import com.socialmedia.poc.dto.requests.PostRequest;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
 import com.socialmedia.poc.entity.*;
-import com.socialmedia.poc.repository.exceptions.PostNotExist;
-import com.socialmedia.poc.repository.exceptions.UserNotExist;
-import com.socialmedia.poc.repository.MediaTypeRepo;
-import com.socialmedia.poc.repository.PostInfoRepo;
-import com.socialmedia.poc.repository.PostRepo;
-import com.socialmedia.poc.repository.UserRepo;
+import com.socialmedia.poc.exceptions.PostNotExist;
+import com.socialmedia.poc.exceptions.UserNotExist;
+import com.socialmedia.poc.repository.*;
 import com.socialmedia.poc.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,72 +38,25 @@ public class PostServiceImpl implements PostService {
     private PostInfoRepo postInfoRepo;
     @Autowired
     private MediaTypeRepo mediaTypeRepo;
+    @Autowired
+    private FollowersRepo followersRepo;
 
     @Override
     public PostResponseList allPost(Long userId) {
-        return PostResponseList.builder().posts(
-                List.of(PostResponse.
-                        builder().
-                        user(User.
-                                builder().
-                                name("").
-                                profileUrl("").
-                                followerCount(0).
-                                build()).
-                        postType(PostType.TEXT).
-                        textorfeed("helloTexts").
-                        postInfo(PostInfo.
-                                builder().
-                                commentCount(2).
-                                likeCount(100).
-                                build()).
-                        build(), PostResponse.
-                        builder().
-                        user(User.
-                                builder().
-                                name("").
-                                profileUrl("").
-                                followerCount(null).
-                                build()).
-                        postType(PostType.IMAGE).
-                        postImagePath("this  is the image path").
-                        postInfo(PostInfo.
-                                builder().
-                                commentCount(2).
-                                likeCount(100).
-                                build()).
-                        build())
-        ).build();
 
+        List<PostsEntity> postsEntityList = postRepo.findAllByUserIdOrderByGmtCreateDesc(userId);
+        if (postsEntityList.isEmpty()) {
+            log.info("This user didn't create any post yet");
+        }
+        List<PostResponse> postResponseList = new ArrayList<>();
+        postsEntityList.forEach(postsEntity -> postResponseList.add(mapPostToResponse(postsEntity,userId)));
+        return PostResponseList.builder().posts(postResponseList).build();
     }
 
     @Override
     public PostResponse getPostById(Long userId, Long postId) {
-
-        PostsEntity postById = postRepo.findById(postId).orElseThrow(PostNotExist::new);
-
-        int likes = postById.getReactions().stream().filter(Reactions::isLikes).toList().size();
-        int unlikes = postById.getReactions().stream().filter(Reactions::isUnlikes).toList().size();
-
-        return PostResponse.
-                builder().
-                user(User.
-                        builder().
-                        name(postById.getUser().getFname()).
-                        profession(postById.getUser().getProfession()).
-                        followerCount(null).
-                        build()).
-                postType(PostType.TEXT).
-                textorfeed("helloTexts").
-                postInfo(PostInfo.
-                        builder().
-                        commentCount(postById.getComments().size()).
-                        likeCount(likes).
-                        unlikeCount(unlikes).
-                        build()).
-                likedByMe(checkPostAlreadyLikedByUser(userId, postId)).
-                dislikeByMe(checkPostAlreadyDisLikedByUser(userId, postId)).
-                build();
+        PostsEntity postsEntity = postRepo.findById(postId).orElseThrow(PostNotExist::new);
+        return mapPostToResponse(postsEntity, userId);
     }
 
     @Override
@@ -156,5 +107,37 @@ public class PostServiceImpl implements PostService {
                 stream().
                 filter(Reactions::isUnlikes).
                 anyMatch(reactions -> reactions.getUser().getId().equals(userId));
+    }
+
+    PostResponse mapPostToResponse(PostsEntity postsEntity, Long userId) {
+        int likes = postsEntity.getReactions().stream().filter(Reactions::isLikes).toList().size();
+        int unlikes = postsEntity.getReactions().stream().filter(Reactions::isUnlikes).toList().size();
+        List<Followers> followersList = followersRepo.findByFollowedToId(postsEntity.getUser().getId());
+        Boolean followedByMe = followersList.stream().anyMatch(followers -> followers.getFollowedBy().getId().equals(userId));
+        Long followers = followersList.stream().count();
+
+        return PostResponse.
+                builder().
+                postId(postsEntity.getId()).
+                user(User.
+                        builder().
+                        userId(postsEntity.getUser().getId()).
+                        name(postsEntity.getUser().getFname()).
+                        profession(postsEntity.getUser().getProfession()).
+                        followerCount(followers).
+                        followedByMe(followedByMe).
+                        isThisMe(postsEntity.getUser().getId().equals(userId)).
+                        build()).
+                postType(PostType.TEXT).
+                textOrFeed(postsEntity.getPostMetaData().getText()).
+                postInfo(PostInfo.
+                        builder().
+                        commentCount(postsEntity.getComments().size()).
+                        likeCount(likes).
+                        unlikeCount(unlikes).
+                        build()).
+                likedByMe(checkPostAlreadyLikedByUser(userId, postsEntity.getId())).
+                dislikeByMe(checkPostAlreadyDisLikedByUser(userId, postsEntity.getId())).
+                build();
     }
 }

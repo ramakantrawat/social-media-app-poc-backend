@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/v2/api-docs",
                         "/user/create",
-                        "user/generateToken",
+                        "/user/generateToken",
                         "/swagger-resources",
                         "/swagger-resources/**",
                         "/configuration/ui",
@@ -53,8 +53,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/posts/**").authenticated()
                 .and()
-//                .authorizeHttpRequests().requestMatchers("/auth/admin/**").authenticated()
-//                .and()
+                .authorizeHttpRequests().requestMatchers("/user/**").authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

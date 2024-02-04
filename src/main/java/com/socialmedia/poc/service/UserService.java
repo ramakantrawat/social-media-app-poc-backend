@@ -6,6 +6,7 @@ package com.socialmedia.poc.service;
 
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
+import com.socialmedia.poc.dto.requests.FollowRequest;
 
 /**
  * @author Ramakant rawat
@@ -14,4 +15,5 @@ import com.socialmedia.poc.dto.requests.CreateUserRequest;
 public interface UserService {
     void createUser(CreateUserRequest createUserRequest);
     String createToken(AuthRequest authRequest);
+    Boolean follow(Long followBy, FollowRequest followRequest);
 }

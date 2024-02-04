@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
  */
 
 public interface Post {
-    @GetMapping
-    PostResponseList getAllPosts(@RequestHeader Long userId);
+    @GetMapping("/my-post")
+    PostResponseList getAllPosts(@RequestHeader HttpHeaders httpHeaders);
 
     @GetMapping("/{id}")
     PostResponse getById(@RequestHeader HttpHeaders httpHeaders, @PathVariable Long id);

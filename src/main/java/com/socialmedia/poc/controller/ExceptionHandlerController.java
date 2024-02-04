@@ -6,9 +6,9 @@ package com.socialmedia.poc.controller;
 
 import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.dto.responses.GeneralErrorResponse;
-import com.socialmedia.poc.repository.exceptions.PostNotExist;
-import com.socialmedia.poc.repository.exceptions.UserAlreadyExistException;
-import com.socialmedia.poc.repository.exceptions.UserNotExist;
+import com.socialmedia.poc.exceptions.PostNotExist;
+import com.socialmedia.poc.exceptions.UserAlreadyExistException;
+import com.socialmedia.poc.exceptions.UserNotExist;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

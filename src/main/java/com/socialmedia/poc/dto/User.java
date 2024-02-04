@@ -18,8 +18,11 @@ import lombok.*;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
+    private Long userId;
     private String name;
     private String profileUrl;
     private String profession;
-    private Integer followerCount;
+    private Long followerCount;
+    private Boolean followedByMe;
+    private Boolean isThisMe;
 }
