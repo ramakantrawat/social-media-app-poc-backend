@@ -19,4 +19,5 @@ import java.util.Optional;
 public interface FollowersRepo extends JpaRepository<Followers, Long> {
     Optional<Followers> findByFollowedByIdAndFollowedToId(Long followedBy, Long followedTo);
     List<Followers> findByFollowedToId(Long id);
+    List<Followers> findByFollowedById(Long id);
 }

@@ -5,6 +5,8 @@
 package com.socialmedia.poc.controller.impl;
 
 import com.socialmedia.poc.controller.User;
+import com.socialmedia.poc.dto.UserDto;
+import com.socialmedia.poc.dto.UserListDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
@@ -16,6 +18,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author Ramakant rawat
@@ -43,5 +47,17 @@ public class UserImpl implements User {
     public Boolean follow(HttpHeaders httpHeaders, FollowRequest followRequest) {
         Long followBy = TokenUtil.getUserIdByToken(httpHeaders);
         return userService.follow(followBy, followRequest);
+    }
+
+    @Override
+    public UserListDto followers(HttpHeaders httpHeaders) {
+        Long followBy = TokenUtil.getUserIdByToken(httpHeaders);
+        return userService.followers(followBy);
+    }
+
+    @Override
+    public UserListDto following(HttpHeaders httpHeaders) {
+        Long followBy = TokenUtil.getUserIdByToken(httpHeaders);
+        return userService.following(followBy);
     }
 }

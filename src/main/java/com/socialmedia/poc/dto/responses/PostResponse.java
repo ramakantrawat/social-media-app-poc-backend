@@ -7,7 +7,7 @@ package com.socialmedia.poc.dto.responses;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.socialmedia.poc.constants.enums.PostType;
 import com.socialmedia.poc.dto.PostInfo;
-import com.socialmedia.poc.dto.User;
+import com.socialmedia.poc.dto.UserDto;
 import lombok.*;
 
 /**
@@ -22,7 +22,7 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostResponse {
     private Long postId;
-    private User user;
+    private UserDto user;
     private PostInfo postInfo;
     private PostType postType;
     private String textOrFeed;

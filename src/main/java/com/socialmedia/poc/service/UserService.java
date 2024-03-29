@@ -4,9 +4,13 @@
  */
 package com.socialmedia.poc.service;
 
+import com.socialmedia.poc.dto.UserDto;
+import com.socialmedia.poc.dto.UserListDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
+
+import java.util.List;
 
 /**
  * @author Ramakant rawat
@@ -16,4 +20,7 @@ public interface UserService {
     void createUser(CreateUserRequest createUserRequest);
     String createToken(AuthRequest authRequest);
     Boolean follow(Long followBy, FollowRequest followRequest);
+    UserListDto followers(Long userId);
+    UserListDto following(Long userId);
+
 }

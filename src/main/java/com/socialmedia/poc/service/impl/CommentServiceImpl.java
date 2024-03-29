@@ -5,7 +5,7 @@
 package com.socialmedia.poc.service.impl;
 
 import com.socialmedia.poc.constants.StringConstants;
-import com.socialmedia.poc.dto.User;
+import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.requests.CommentRequest;
 import com.socialmedia.poc.dto.responses.PostCommentsResponse;
 import com.socialmedia.poc.dto.responses.PostCommentsResponseList;
@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     PostCommentsResponse commentEntityToCommentResponse(Comments comments, Long userId) {
-        User user = User.builder().
+        UserDto user = UserDto.builder().
                 name(comments.getByUser().getId().equals(userId) ? StringConstants.YOU : comments.getByUser().getFname()).
                 profileUrl(comments.getByUser().getProfileUrl()).
                 profession(comments.getByUser().getProfession()).build();

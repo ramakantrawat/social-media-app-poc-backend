@@ -5,6 +5,8 @@
 package com.socialmedia.poc.service.impl;
 
 import com.socialmedia.poc.constants.StringConstants;
+import com.socialmedia.poc.dto.UserDto;
+import com.socialmedia.poc.dto.UserListDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
@@ -17,6 +19,7 @@ import com.socialmedia.poc.jsonwebtoken.JwtService;
 import com.socialmedia.poc.repository.FollowersRepo;
 import com.socialmedia.poc.repository.UserRepo;
 import com.socialmedia.poc.service.UserService;
+import com.socialmedia.poc.util.Converter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,8 +29,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Ramakant rawat
@@ -90,6 +95,18 @@ public class UserServiceImpl implements UserService {
         Followers followers = Followers.builder().followedBy(byUser).followedTo(toUser).build();
         followersRepo.save(followers);
         return true;
+    }
+
+    @Override
+    public UserListDto followers(Long userId) {
+        List<Followers> followingList = followersRepo.findByFollowedToId(userId);
+        return UserListDto.builder().users(followingList.stream().map(followers -> Converter.userEntityToFollowingDto(followers.getFollowedBy())).collect(Collectors.toList())).build();
+    }
+
+    @Override
+    public UserListDto following(Long userId) {
+        List<Followers> followedList = followersRepo.findByFollowedById(userId);
+        return UserListDto.builder().users(followedList.stream().map(followers -> Converter.userEntityToFollowingDto(followers.getFollowedTo())).collect(Collectors.toList())).build();
     }
 
     private void chkMobAnDEmlExst(String email, String mobileNumber) {

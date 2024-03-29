@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @author Ramakant rawat
- * @version $Id: PostRepo.java, v 0.1 2024-02-01 12:06 AM Ramakant rawat Exp $$
+741 * @version $Id: PostRepo.java, v 0.1 2024-02-01 12:06 AM Ramakant rawat Exp $$
  */
 @Repository
 public interface PostRepo extends JpaRepository<PostsEntity, Long> {

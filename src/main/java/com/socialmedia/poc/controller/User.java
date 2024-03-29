@@ -4,13 +4,18 @@
  */
 package com.socialmedia.poc.controller;
 
+import com.socialmedia.poc.dto.UserDto;
+import com.socialmedia.poc.dto.UserListDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+
+import java.util.List;
 
 /**
  * @author Ramakant rawat
@@ -23,4 +28,8 @@ public interface User {
     String authenticateAndGetToken(@RequestBody AuthRequest authRequest);
     @PostMapping("/follow")
     Boolean follow(@RequestHeader HttpHeaders httpHeaders, @RequestBody FollowRequest followRequest);
+    @GetMapping("/followers")
+    UserListDto followers(@RequestHeader HttpHeaders httpHeaders);
+    @GetMapping("/following")
+    UserListDto following(@RequestHeader HttpHeaders httpHeaders);
 }
