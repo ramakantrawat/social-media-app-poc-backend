@@ -25,10 +25,10 @@ public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fname;
-    private String lname;
-    private String email;
-    private String mobile;
+//    private String fname;
+//    private String lname;
+//    private String email;
+//    private String mobile;
     private String profileUrl;
     private String profession;
     private String password;
@@ -41,6 +41,9 @@ public class UserInfo {
 
     @OneToMany
     private List<Comments> comments;
+
+    @OneToOne
+    private User user;
 
     private Date gmtCreate;
 

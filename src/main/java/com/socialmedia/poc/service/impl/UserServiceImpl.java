@@ -5,18 +5,19 @@
 package com.socialmedia.poc.service.impl;
 
 import com.socialmedia.poc.constants.StringConstants;
-import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.UserListDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
 import com.socialmedia.poc.entity.Followers;
+import com.socialmedia.poc.entity.User;
 import com.socialmedia.poc.entity.UserInfo;
 import com.socialmedia.poc.exceptions.AlreadyFollowedException;
 import com.socialmedia.poc.exceptions.UserAlreadyExistException;
 import com.socialmedia.poc.exceptions.UserNotExist;
 import com.socialmedia.poc.jsonwebtoken.JwtService;
 import com.socialmedia.poc.repository.FollowersRepo;
+import com.socialmedia.poc.repository.UserInfoRepo;
 import com.socialmedia.poc.repository.UserRepo;
 import com.socialmedia.poc.service.UserService;
 import com.socialmedia.poc.util.Converter;
@@ -42,6 +43,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
+    private UserInfoRepo userInfoRepo;
+
+    @Autowired
     private UserRepo userRepo;
 
     @Autowired
@@ -60,17 +64,22 @@ public class UserServiceImpl implements UserService {
     public void createUser(CreateUserRequest createUserRequest) {
         chkMobAnDEmlExst(createUserRequest.getEmail(), createUserRequest.getMobileNumber());
 
-        UserInfo user = UserInfo.
+        User user = User.
                 builder().
                 fname(createUserRequest.getFName()).
                 lname(createUserRequest.getLName()).
                 email(createUserRequest.getEmail()).
+                mobile(createUserRequest.getMobileNumber()).
+                build();
+        UserInfo userInfo = UserInfo.
+                builder().
+                user(user).
                 password(encoder.encode(createUserRequest.getPassword())).
                 gmtCreate(new Date()).
                 gmtUpdate(new Date()).
-                mobile(createUserRequest.getMobileNumber()).
                 build();
         userRepo.save(user);
+        userInfoRepo.save(userInfo);
     }
 
     @Override
@@ -90,8 +99,8 @@ public class UserServiceImpl implements UserService {
         if (followersRepo.findByFollowedByIdAndFollowedToId(followBy, followRequest.getFollowedTo()).isPresent()) {
             throw new AlreadyFollowedException();
         }
-        UserInfo byUser = userRepo.findById(followBy).orElseThrow(UserNotExist::new);
-        UserInfo toUser = userRepo.findById(followRequest.getFollowedTo()).orElseThrow(UserNotExist::new);
+        UserInfo byUser = userInfoRepo.findById(followBy).orElseThrow(UserNotExist::new);
+        UserInfo toUser = userInfoRepo.findById(followRequest.getFollowedTo()).orElseThrow(UserNotExist::new);
         Followers followers = Followers.builder().followedBy(byUser).followedTo(toUser).build();
         followersRepo.save(followers);
         return true;

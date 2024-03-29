@@ -16,7 +16,7 @@ import com.socialmedia.poc.exceptions.PostNotExist;
 import com.socialmedia.poc.exceptions.UserNotExist;
 import com.socialmedia.poc.repository.CommentRepo;
 import com.socialmedia.poc.repository.PostRepo;
-import com.socialmedia.poc.repository.UserRepo;
+import com.socialmedia.poc.repository.UserInfoRepo;
 import com.socialmedia.poc.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
     @Autowired
-    private UserRepo userRepo;
+    private UserInfoRepo userInfoRepo;
     @Autowired
     private PostRepo postRepo;
     @Autowired
@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public boolean doCommentOnPost(Long userId, CommentRequest commentRequest) {
-        UserInfo user = userRepo.findById(userId).orElseThrow(UserNotExist::new);
+        UserInfo user = userInfoRepo.findById(userId).orElseThrow(UserNotExist::new);
         PostsEntity post = postRepo.findById(commentRequest.getPostId()).orElseThrow(PostNotExist::new);
         Comments comment = Comments.
                 builder().
@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
 
     PostCommentsResponse commentEntityToCommentResponse(Comments comments, Long userId) {
         UserDto user = UserDto.builder().
-                name(comments.getByUser().getId().equals(userId) ? StringConstants.YOU : comments.getByUser().getFname()).
+                name(comments.getByUser().getId().equals(userId) ? StringConstants.YOU : comments.getByUser().getUser().getFname()).
                 profileUrl(comments.getByUser().getProfileUrl()).
                 profession(comments.getByUser().getProfession()).build();
         return PostCommentsResponse.

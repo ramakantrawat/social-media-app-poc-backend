@@ -31,7 +31,7 @@ import java.util.List;
 @Slf4j
 public class PostServiceImpl implements PostService {
     @Autowired
-    private UserRepo userRepo;
+    private UserInfoRepo userInfoRepo;
     @Autowired
     private PostRepo postRepo;
     @Autowired
@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Long createPost(PostRequest postRequest, Long userId) {
         log.info("Checking user is exist or not");
-        UserInfo userEntity = userRepo.findById(userId).orElseThrow(UserNotExist::new);
+        UserInfo userEntity = userInfoRepo.findById(userId).orElseThrow(UserNotExist::new);
         log.info("User is exist");
 
         MediaTypeEntity mediaType = mediaTypeRepo.findByType(postRequest.getMediaType().getType());
@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService {
         PostsEntity post =
                 PostsEntity.
                         builder().
-                        user(userEntity).
+                        userInfo(userEntity).
                         gmtCreate(new Date()).
                         gmtUpdate(new Date()).
                         build();
@@ -112,7 +112,7 @@ public class PostServiceImpl implements PostService {
     PostResponse mapPostToResponse(PostsEntity postsEntity, Long userId) {
         int likes = postsEntity.getReactions().stream().filter(Reactions::isLikes).toList().size();
         int unlikes = postsEntity.getReactions().stream().filter(Reactions::isUnlikes).toList().size();
-        List<Followers> followersList = followersRepo.findByFollowedToId(postsEntity.getUser().getId());
+        List<Followers> followersList = followersRepo.findByFollowedToId(postsEntity.getUserInfo().getId());
         Boolean followedByMe = followersList.stream().anyMatch(followers -> followers.getFollowedBy().getId().equals(userId));
         Long followers = followersList.stream().count();
 
@@ -121,12 +121,12 @@ public class PostServiceImpl implements PostService {
                 postId(postsEntity.getId()).
                 user(UserDto.
                         builder().
-                        userId(postsEntity.getUser().getId()).
-                        name(postsEntity.getUser().getFname()).
-                        profession(postsEntity.getUser().getProfession()).
+                        userId(postsEntity.getUserInfo().getId()).
+                        name(postsEntity.getUserInfo().getUser().getFname()).
+                        profession(postsEntity.getUserInfo().getProfession()).
                         followerCount(followers).
                         followedByMe(followedByMe).
-                        isThisMe(postsEntity.getUser().getId().equals(userId)).
+                        isThisMe(postsEntity.getUserInfo().getId().equals(userId)).
                         build()).
                 postType(PostType.TEXT).
                 textOrFeed(postsEntity.getPostMetaData().getText()).

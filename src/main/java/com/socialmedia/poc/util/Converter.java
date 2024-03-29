@@ -9,7 +9,7 @@ public class Converter {
                 builder().
                 userId(userInfo.getId()).
                 profileUrl(userInfo.getProfileUrl()).
-                name(userInfo.getFname() + "" + userInfo.getLname()).
+                name(userInfo.getUser().getFname() + "" + userInfo.getUser().getLname()).
                 profession(userInfo.getProfession()).build();
     }
 }

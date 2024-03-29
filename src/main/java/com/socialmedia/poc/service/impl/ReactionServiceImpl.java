@@ -12,7 +12,7 @@ import com.socialmedia.poc.exceptions.PostNotExist;
 import com.socialmedia.poc.exceptions.UserNotExist;
 import com.socialmedia.poc.repository.PostRepo;
 import com.socialmedia.poc.repository.ReactionRepo;
-import com.socialmedia.poc.repository.UserRepo;
+import com.socialmedia.poc.repository.UserInfoRepo;
 import com.socialmedia.poc.service.ReactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 public class ReactionServiceImpl implements ReactionService {
     @Autowired
-    private UserRepo userRepo;
+    private UserInfoRepo userInfoRepo;
     @Autowired
     private PostRepo postRepo;
     @Autowired
@@ -45,7 +45,7 @@ public class ReactionServiceImpl implements ReactionService {
         Long postId = reactionRequest.getPostId();
         List<Reactions> reactionsList = reactionRepo.findAllByUserIdAndPostId(userId, postId);
 
-        UserInfo user = userRepo.findById(userId).orElseThrow(UserNotExist::new);
+        UserInfo user = userInfoRepo.findById(userId).orElseThrow(UserNotExist::new);
         PostsEntity post = postRepo.findById(reactionRequest.getPostId()).orElseThrow(PostNotExist::new);
 
         if (reactionsList.isEmpty()) {
