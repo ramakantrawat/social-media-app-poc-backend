@@ -4,7 +4,7 @@
  */
 package com.socialmedia.poc.dto.responses;
 
-import com.socialmedia.poc.dto.User;
+import com.socialmedia.poc.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +22,7 @@ import java.util.Date;
 @Builder
 public class PostCommentsResponse {
     private Long id;
-    private User user;
+    private UserDto user;
     private String comment;
     private Long loves;
     private Date date;

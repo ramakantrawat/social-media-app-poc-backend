@@ -17,7 +17,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class User {
+public class UserDto {
     private Long userId;
     private String name;
     private String profileUrl;

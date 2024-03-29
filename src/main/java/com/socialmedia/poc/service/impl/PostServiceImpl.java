@@ -6,7 +6,7 @@ package com.socialmedia.poc.service.impl;
 
 import com.socialmedia.poc.constants.enums.PostType;
 import com.socialmedia.poc.dto.PostInfo;
-import com.socialmedia.poc.dto.User;
+import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.requests.PostRequest;
 import com.socialmedia.poc.dto.responses.PostResponse;
 import com.socialmedia.poc.dto.responses.PostResponseList;
@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
             log.info("This user didn't create any post yet");
         }
         List<PostResponse> postResponseList = new ArrayList<>();
-        postsEntityList.forEach(postsEntity -> postResponseList.add(mapPostToResponse(postsEntity,userId)));
+        postsEntityList.forEach(postsEntity -> postResponseList.add(mapPostToResponse(postsEntity, userId)));
         return PostResponseList.builder().posts(postResponseList).build();
     }
 
@@ -119,7 +119,7 @@ public class PostServiceImpl implements PostService {
         return PostResponse.
                 builder().
                 postId(postsEntity.getId()).
-                user(User.
+                user(UserDto.
                         builder().
                         userId(postsEntity.getUser().getId()).
                         name(postsEntity.getUser().getFname()).
