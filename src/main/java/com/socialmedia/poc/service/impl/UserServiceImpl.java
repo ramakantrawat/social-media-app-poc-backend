@@ -20,6 +20,7 @@ import com.socialmedia.poc.repository.FollowersRepo;
 import com.socialmedia.poc.repository.UserRepo;
 import com.socialmedia.poc.service.UserService;
 import com.socialmedia.poc.util.Converter;
+import com.socialmedia.poc.util.EmailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,6 +53,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private EmailUtil emailUtil;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -71,6 +74,7 @@ public class UserServiceImpl implements UserService {
                 mobile(createUserRequest.getMobileNumber()).
                 build();
         userRepo.save(user);
+        emailUtil.sendEmail(createUserRequest.getEmail(),"Welcome","you are Register to the POC project by dev testing");
     }
 
     @Override
