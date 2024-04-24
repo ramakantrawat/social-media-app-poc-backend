@@ -16,6 +16,7 @@ import com.socialmedia.poc.util.TokenUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Ramakant rawat
  * @version $Id: PostImpl.java, v 0.1 2024-01-30 9:03 PM Ramakant rawat Exp $$
  */
+@CrossOrigin(origins = "*")
 @RequestMapping("/posts")
 @RestController
+
 public class PostImpl implements Post {
     private PostService postService;
 

@@ -83,6 +83,7 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authentication.isAuthenticated()) {
             Optional<UserInfo> email = userRepo.findByEmail(authRequest.getUsername());
+            log.info(email.get().getEmail());
             return jwtService.generateToken(authRequest.getUsername(), email.get().getId());
         } else {
             throw new UserNotExist();
