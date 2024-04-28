@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseList allPost(Long userId) {
 
-        List<PostsEntity> postsEntityList = postRepo.findAllByUserIdOrderByGmtCreateDesc(userId);
+        List<PostsEntity> postsEntityList = postRepo.findAllByOrderByGmtCreateDesc();
         if (postsEntityList.isEmpty()) {
             log.info("This user didn't create any post yet");
         }
@@ -65,7 +65,7 @@ public class PostServiceImpl implements PostService {
         UserInfo userEntity = userRepo.findById(userId).orElseThrow(UserNotExist::new);
         log.info("User is exist");
 
-        MediaTypeEntity mediaType = mediaTypeRepo.findByType(postRequest.getMediaType().getType());
+        MediaTypeEntity mediaType = mediaTypeRepo.findByType(postRequest.getMediaType());
         log.info("fetched mediaType from db");
 
         PostsEntity post =
@@ -122,14 +122,16 @@ public class PostServiceImpl implements PostService {
                 user(UserDto.
                         builder().
                         userId(postsEntity.getUser().getId()).
+                        profileUrl(postsEntity.getUser().getProfileUrl()).
                         name(postsEntity.getUser().getFname()).
                         profession(postsEntity.getUser().getProfession()).
                         followerCount(followers).
                         followedByMe(followedByMe).
                         isThisMe(postsEntity.getUser().getId().equals(userId)).
                         build()).
-                postType(PostType.TEXT).
+                postType(PostType.valueOf(postsEntity.getPostMetaData().getMediaType().getType())).
                 textOrFeed(postsEntity.getPostMetaData().getText()).
+                postMediaUrl(postsEntity.getPostMetaData().getMediaUrl()).
                 postInfo(PostInfo.
                         builder().
                         commentCount(postsEntity.getComments().size()).

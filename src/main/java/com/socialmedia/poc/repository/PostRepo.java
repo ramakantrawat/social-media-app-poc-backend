@@ -17,4 +17,5 @@ import java.util.List;
 @Repository
 public interface PostRepo extends JpaRepository<PostsEntity, Long> {
     List<PostsEntity> findAllByUserIdOrderByGmtCreateDesc(Long userId);
+    List<PostsEntity> findAllByOrderByGmtCreateDesc();
 }

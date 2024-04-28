@@ -26,8 +26,7 @@ public class PostResponse {
     private PostInfo postInfo;
     private PostType postType;
     private String textOrFeed;
-    private String postImagePath;
-    private String postVideoPath;
+    private String postMediaUrl;
     private Boolean likedByMe;
     private Boolean dislikeByMe;
 }

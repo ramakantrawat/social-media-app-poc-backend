@@ -18,7 +18,7 @@ import lombok.Setter;
 @Builder
 public class PostRequest {
     private String text;
-    private MediaType mediaType;
+    private String mediaType;
     private String media;
     private Boolean isPublic;
 }
