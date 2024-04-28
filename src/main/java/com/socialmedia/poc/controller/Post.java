@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.*;
  */
 
 public interface Post {
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/my-post")
+
     PostResponseList getAllPosts(@RequestHeader HttpHeaders httpHeaders);
 
     @GetMapping("/{id}")
