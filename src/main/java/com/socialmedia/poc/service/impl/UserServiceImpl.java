@@ -5,6 +5,7 @@
 package com.socialmedia.poc.service.impl;
 
 import com.socialmedia.poc.constants.StringConstants;
+import com.socialmedia.poc.constants.enums.RolesType;
 import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.UserListDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService {
                 gmtCreate(new Date()).
                 gmtUpdate(new Date()).
                 mobile(createUserRequest.getMobileNumber()).
+                roles(RolesType.USER.getRole()).
                 build();
         userRepo.save(user);
         emailUtil.sendEmail(createUserRequest.getEmail(),"Welcome","you are Register to the POC project by dev testing");
