@@ -8,6 +8,7 @@ import com.socialmedia.poc.constants.StringConstants;
 import com.socialmedia.poc.constants.enums.RolesType;
 import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.UserListDto;
+import com.socialmedia.poc.dto.UserProfileDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
@@ -114,6 +115,24 @@ public class UserServiceImpl implements UserService {
     public UserListDto following(Long userId) {
         List<Followers> followedList = followersRepo.findByFollowedById(userId);
         return UserListDto.builder().users(followedList.stream().map(followers -> Converter.userEntityToFollowingDto(followers.getFollowedTo())).collect(Collectors.toList())).build();
+    }
+
+    @Override
+    public UserProfileDto myProfile(Long userId) {
+        Optional<UserInfo> userInfoOptional = userRepo.findById(userId);
+        UserInfo userInfo = null;
+        if (userInfoOptional.isPresent()){
+           userInfo =  userInfoOptional.get();
+        }
+
+    return  UserProfileDto.
+                builder().
+                name(userInfo.getFname()+" "+userInfo.getLname()).
+                email(userInfo.getEmail()).
+                mobile(userInfo.getMobile()).
+                build();
+
+
     }
 
     private void chkMobAnDEmlExst(String email, String mobileNumber) {
