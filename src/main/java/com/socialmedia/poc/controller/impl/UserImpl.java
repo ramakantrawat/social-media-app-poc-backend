@@ -7,6 +7,7 @@ package com.socialmedia.poc.controller.impl;
 import com.socialmedia.poc.controller.User;
 import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.UserListDto;
+import com.socialmedia.poc.dto.UserProfileDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
@@ -59,5 +60,12 @@ public class UserImpl implements User {
     public UserListDto following(HttpHeaders httpHeaders) {
         Long followBy = TokenUtil.getUserIdByToken(httpHeaders);
         return userService.following(followBy);
+    }
+
+    @Override
+    public UserProfileDto myProfile(HttpHeaders httpHeaders) {
+        Long userId = TokenUtil.getUserIdByToken(httpHeaders);
+        UserProfileDto userProfileDto = userService.myProfile(userId);
+        return userProfileDto;
     }
 }

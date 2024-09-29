@@ -6,6 +6,7 @@ package com.socialmedia.poc.service;
 
 import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.UserListDto;
+import com.socialmedia.poc.dto.UserProfileDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
@@ -22,5 +23,6 @@ public interface UserService {
     Boolean follow(Long followBy, FollowRequest followRequest);
     UserListDto followers(Long userId);
     UserListDto following(Long userId);
+    UserProfileDto myProfile(Long userId);
 
 }

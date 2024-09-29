@@ -6,6 +6,7 @@ package com.socialmedia.poc.controller;
 
 import com.socialmedia.poc.dto.UserDto;
 import com.socialmedia.poc.dto.UserListDto;
+import com.socialmedia.poc.dto.UserProfileDto;
 import com.socialmedia.poc.dto.requests.AuthRequest;
 import com.socialmedia.poc.dto.requests.CreateUserRequest;
 import com.socialmedia.poc.dto.requests.FollowRequest;
@@ -32,4 +33,6 @@ public interface User {
     UserListDto followers(@RequestHeader HttpHeaders httpHeaders);
     @GetMapping("/following")
     UserListDto following(@RequestHeader HttpHeaders httpHeaders);
+    @GetMapping("/myProfile")
+    UserProfileDto myProfile(@RequestHeader HttpHeaders  httpHeaders);
 }
