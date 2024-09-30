@@ -15,6 +15,7 @@ import com.socialmedia.poc.exceptions.UserNotExist;
  */
 public interface PostService {
     PostResponseList allPost(Long userId);
+    PostResponseList feedPosts(Long userId);
     PostResponse getPostById(Long userId, Long id);
     Long createPost(PostRequest postRequest, Long userId) throws UserNotExist;
 }

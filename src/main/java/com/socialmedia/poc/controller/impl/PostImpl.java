@@ -45,6 +45,12 @@ public class PostImpl implements Post {
     }
 
     @Override
+    public PostResponseList feedPosts(HttpHeaders httpHeaders) {
+        Long userId = TokenUtil.getUserIdByToken(httpHeaders);
+        return postService.feedPosts(userId);
+    }
+
+    @Override
     public PostResponse getById(HttpHeaders httpHeaders, Long id) {
         Long userIdByToken = TokenUtil.getUserIdByToken(httpHeaders);
 

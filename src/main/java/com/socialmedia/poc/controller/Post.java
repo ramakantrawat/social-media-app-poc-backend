@@ -22,8 +22,10 @@ public interface Post {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/my-post")
-
     PostResponseList getAllPosts(@RequestHeader HttpHeaders httpHeaders);
+
+    @GetMapping("/feedPosts")
+    PostResponseList feedPosts(@RequestHeader HttpHeaders httpHeaders);
 
     @GetMapping("/{id}")
     PostResponse getById(@RequestHeader HttpHeaders httpHeaders, @PathVariable Long id);

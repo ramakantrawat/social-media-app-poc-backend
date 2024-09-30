@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
                 roles(RolesType.USER.getRole()).
                 build();
         userRepo.save(user);
-        emailUtil.sendEmail(createUserRequest.getEmail(),"Welcome","you are Register to the POC project by dev testing");
+        emailUtil.sendEmail(createUserRequest.getEmail(), "Welcome", "you are Register to the POC project by dev testing");
     }
 
     @Override
@@ -95,9 +95,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean follow(Long followBy, FollowRequest followRequest) {
-        if (followersRepo.findByFollowedByIdAndFollowedToId(followBy, followRequest.getFollowedTo()).isPresent()) {
-            throw new AlreadyFollowedException();
+        Optional<Followers> followersIsPresentOptional = followersRepo.findByFollowedByIdAndFollowedToId(followBy, followRequest.getFollowedTo());
+        Followers alreadyExistFollowerDoUnfollow = null;
+        if (followersIsPresentOptional.isPresent()){
+            alreadyExistFollowerDoUnfollow = followersIsPresentOptional.get();
+            followersRepo.delete(alreadyExistFollowerDoUnfollow);
+            return true;
         }
+
+
         UserInfo byUser = userRepo.findById(followBy).orElseThrow(UserNotExist::new);
         UserInfo toUser = userRepo.findById(followRequest.getFollowedTo()).orElseThrow(UserNotExist::new);
         Followers followers = Followers.builder().followedBy(byUser).followedTo(toUser).build();
@@ -121,17 +127,40 @@ public class UserServiceImpl implements UserService {
     public UserProfileDto myProfile(Long userId) {
         Optional<UserInfo> userInfoOptional = userRepo.findById(userId);
         UserInfo userInfo = null;
-        if (userInfoOptional.isPresent()){
-           userInfo =  userInfoOptional.get();
+        if (userInfoOptional.isPresent()) {
+            userInfo = userInfoOptional.get();
         }
 
-    return  UserProfileDto.
+        return UserProfileDto.
                 builder().
-                name(userInfo.getFname()+" "+userInfo.getLname()).
+                name(userInfo.getFname() + " " + userInfo.getLname()).
                 email(userInfo.getEmail()).
                 mobile(userInfo.getMobile()).
                 build();
 
+
+    }
+
+    @Override
+    public UserListDto getAllUsers(Long userId) {
+        List<UserInfo> all = userRepo.findAll();
+        List<UserDto> list = all.stream().map(userInfo -> mapToUserDto(userInfo,userId)).toList();
+        return UserListDto.builder().users(list).build();
+    }
+
+    private UserDto mapToUserDto(UserInfo userInfo, Long userId) {
+
+        List<Followers> followingList = followersRepo.findByFollowedToId(userInfo.getId());
+
+        return UserDto.
+                builder().
+                name(userInfo.getFname() + " " + userInfo.getLname()).
+                userId(userInfo.getId()).
+                followedByMe(followersRepo.findByFollowedByIdAndFollowedToId(userId,userInfo.getId()).isPresent()).
+                profileUrl(userInfo.getProfileUrl()).
+                profession(userInfo.getProfession()).
+                followerCount((long) followingList.size()).
+                build();
 
     }
 
