@@ -24,5 +24,6 @@ public interface UserService {
     UserListDto followers(Long userId);
     UserListDto following(Long userId);
     UserProfileDto myProfile(Long userId);
+    UserListDto getAllUsers(Long userId);
 
 }

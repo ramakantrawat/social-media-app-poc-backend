@@ -68,4 +68,10 @@ public class UserImpl implements User {
         UserProfileDto userProfileDto = userService.myProfile(userId);
         return userProfileDto;
     }
+
+    @Override
+    public UserListDto getAllUsers(HttpHeaders httpHeaders) {
+        Long userId = TokenUtil.getUserIdByToken(httpHeaders);
+        return userService.getAllUsers(userId);
+    }
 }

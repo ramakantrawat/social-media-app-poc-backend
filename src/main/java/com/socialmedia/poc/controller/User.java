@@ -35,4 +35,6 @@ public interface User {
     UserListDto following(@RequestHeader HttpHeaders httpHeaders);
     @GetMapping("/myProfile")
     UserProfileDto myProfile(@RequestHeader HttpHeaders  httpHeaders);
+    @GetMapping("getAllUsers")
+    UserListDto getAllUsers(@RequestHeader HttpHeaders httpHeaders);
 }

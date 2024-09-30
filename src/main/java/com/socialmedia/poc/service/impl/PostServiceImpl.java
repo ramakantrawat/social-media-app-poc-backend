@@ -44,6 +44,17 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseList allPost(Long userId) {
 
+        List<PostsEntity> postsEntityList = postRepo.findAllByUserIdOrderByGmtCreateDesc(userId);
+        if (postsEntityList.isEmpty()) {
+            log.info("This user didn't create any post yet");
+        }
+        List<PostResponse> postResponseList = new ArrayList<>();
+        postsEntityList.forEach(postsEntity -> postResponseList.add(mapPostToResponse(postsEntity, userId)));
+        return PostResponseList.builder().posts(postResponseList).build();
+    }
+
+    @Override
+    public PostResponseList feedPosts(Long userId) {
         List<PostsEntity> postsEntityList = postRepo.findAllByOrderByGmtCreateDesc();
         if (postsEntityList.isEmpty()) {
             log.info("This user didn't create any post yet");
@@ -123,7 +134,7 @@ public class PostServiceImpl implements PostService {
                         builder().
                         userId(postsEntity.getUser().getId()).
                         profileUrl(postsEntity.getUser().getProfileUrl()).
-                        name(postsEntity.getUser().getFname()).
+                        name(postsEntity.getUser().getFname()+" "+postsEntity.getUser().getLname()).
                         profession(postsEntity.getUser().getProfession()).
                         followerCount(followers).
                         followedByMe(followedByMe).
